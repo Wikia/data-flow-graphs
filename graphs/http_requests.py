@@ -28,8 +28,14 @@ def main():
         caller = caller.replace('{closure}', '').strip('\\')
         caller = caller.split('\\')[-1]
 
-        metadata = '{:.0f} qps, resp. times: p50 {:.2f} ms / p95 {:.2f} ms / p99 {:.2f} ms'.format(
-            1. * metrics['count'] / PERIOD,
+        qps = 1. * metrics['count'] / PERIOD
+
+        # this request is not frequent enough
+        if qps < 0.1:
+            continue
+
+        metadata = '{:.2f} qps, resp. times: p50 = {:.2f} ms / p95 = {:.2f} ms / p99 = {:.2f} ms'.format(
+            qps,
             metrics['50.0'],
             metrics['95.0'],
             metrics['99.0'],
