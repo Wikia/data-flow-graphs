@@ -12,6 +12,7 @@ PERIOD = 3600
 
 
 def main():
+    # outbound traffic
     stats = Kibana(period=PERIOD, index_prefix='logstash-mediawiki').get_aggregations(
         query='"Http request" AND severity: "debug" AND @fields.datacenter: "SJC" and @field.environment: "prod"',
         group_by='@context.caller.keyword',
@@ -44,6 +45,32 @@ def main():
         weight = 1. * metrics['count'] / max_count
 
         print format_tsv_entry(source='mediawiki-app', edge=caller, dest=caller, weight=weight, metadata=metadata)
+
+    # inbound traffic
+    stats = Kibana(period=PERIOD, index_prefix='logstash-mediawiki').get_aggregations(
+        query='"Wikia internal request" AND @fields.datacenter: "SJC" and @field.environment: "prod"',
+        group_by='@context.source.keyword',
+        stats_field=''  # we're not interested in percentile data, we just want the bucket size
+    )
+    max_count = max([item['count'] for item in stats.values()])
+    sum_count = sum([item['count'] for item in stats.values()])
+
+    print '# Internal HTTP requests received by MediaWiki grouped by caller ({} requests analyzed)'.format(sum_count)
+
+    for source, metrics in stats.iteritems():
+        qps = 1. * metrics['count'] / PERIOD
+
+        # this request is not frequent enough
+        if qps < 0.1 or source == '1':
+            continue
+
+        metadata = '{:.2f} qps'.format(
+            qps,
+        )
+
+        weight = 1. * metrics['count'] / max_count
+
+        print format_tsv_entry(source=source, edge=source, dest='mediawiki-app', weight=weight, metadata=metadata)
 
 
 if __name__ == '__main__':
