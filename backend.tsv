@@ -1,0 +1,25 @@
+# Query digest for "events_local_users" table, found 500166 queries
+backend:events_local_users.pl	events_local_users.pl:653 (INSERT)	specials:events_local_users	1.00	cron, median time: 72.31 ms, count: 21602600
+backend:events_local_users.pl	events_local_users.pl:648 (DELETE)	specials:events_local_users	1.00	cron, median time: 16.00 ms, count: 21623200
+backend:events_local_users.pl	events_local_users.pl:653 (INSERT)	specials:events_local_users	0.14	job, median time: 79.70 ms, count: 2961800
+backend:events_local_users.pl	events_local_users.pl:648 (DELETE)	specials:events_local_users	0.14	job, median time: 22.39 ms, count: 2950500
+specials:events_local_users	events_local_users.pl:225 (SELECT)	backend:events_local_users.pl	0.02	job, median time: 200.39 ms, count: 404400
+specials:events_local_users	count	ListusersData::loadData	0.00	ap, median time: 311.76 ms, count: 8000
+specials:events_local_users	loadData	ListusersData	0.00	ap, median time: 323.00 ms, count: 4000
+specials:events_local_users	events_local_users.pl:225 (SELECT)	backend:events_local_users.pl	0.00	cron, median time: 30.30 ms, count: 22900
+specials:events_local_users	getUserActivity	LookupContribsCore	0.00	ap, median time: 63.40 ms, count: 2400
+backend:events_local_users.pl	events_local_users.pl:701 (DELETE)	specials:events_local_users	0.00	job, median time: 100.00 ms, count: 5400
+ListusersData	updateUserGroups	specials:events_local_users	0.00	task, median time: 111.50 ms, count: 600
+specials:events_local_users	updateUserGroups	ListusersData	0.00	ap, median time: 37.88 ms, count: 1500
+specials:events_local_users	events_local_users.pl:593 (SELECT)	backend:events_local_users.pl	0.02	job, median time: 0.06 ms, count: 406700
+specials:events_local_users	getWikiUsers	ListusersAjax	0.00	ap, median time: 110.70 ms, count: 100
+specials:events_local_users	events_local_users.pl:593 (SELECT)	backend:events_local_users.pl	0.00	cron, median time: 0.29 ms, count: 22500
+# Query digest for "stats" database, found 500161 queries
+backend:tags_report.pl	tags_report.pl:119 (DELETE)	stats:city_used_tags	1.00	job, median time: 20.19 ms, count: 46691500
+backend:tags_report.pl	tags_report.pl:134 (INSERT)	stats:city_used_tags	0.05	job, median time: 26.11 ms, count: 2218000
+stats:city_used_tags	tags_report.pl:186 (SELECT)	backend:tags_report.pl	0.01	job, median time: 41.51 ms, count: 274100
+stats:city_used_tags	tags_report.pl:186 (SELECT)	backend:tags_report.pl	0.01	job, median time: 3.60 ms, count: 270300
+stats:city_used_tags	execute	WikiaApiTagsReport	0.00	ap, median time: 32.00 ms, count: 8100
+stats:city_used_tags	getGenDate	TagsReportPage	0.00	ap, median time: 53.91 ms, count: 200
+stats:city_used_tags	{closure}	{closure}	0.00	ap, median time: 32.50 ms, count: 200
+stats:city_used_tags	getGalleryPageIds	Wikia\Tasks\Tasks\GalleryCachePurgeTask	0.00	task, median time: 25.80 ms, count: 100
