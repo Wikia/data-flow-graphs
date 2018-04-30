@@ -44,6 +44,8 @@ def test_normalize_pandora_url():
         'pandora:user-preference'
     assert normalize_pandora_url('/cache/c087d8b857cfdc9c7309e35a0c8d4cf7') == \
         'pandora:cache'
+    assert normalize_pandora_url('/static-assets/image/31b2956a-f594-4b81-93a4-1ff6791819ac') == \
+        'pandora:static-assets::image'
     assert normalize_pandora_url('/discussion/997342/threads?page=0&limit=1&viewableOnly=true') == \
         'pandora:discussion::threads'
     assert normalize_pandora_url('/api/v1/status') == \

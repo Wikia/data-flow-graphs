@@ -48,7 +48,7 @@ def normalize_pandora_url(url):
     # user-attribute/user/3131641
     # discussion/1233832/threads
     path = str(urlparse(url).path).lstrip('/')
-    path = re.sub(r'/\d+', '', path)
+    path = re.sub(r'/\d+(/|$)', '/', path)
 
     try:
         (service, method) = path.split('/')[:2]
