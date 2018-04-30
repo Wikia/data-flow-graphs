@@ -3,7 +3,7 @@ An open repository with scripts used to generate data-flow-graphs
 
 ![](https://raw.githubusercontent.com/macbre/data-flow-graph/master/docs/data-flow-example.png)
 
-A set of Python scripts used to generate TSV files that we use to [visualize how data flows at Wikia](https://github.com/macbre/data-flow-graph).
+A set of Python scripts used to generate TSV files that we use to [visualize how data flows at Wikia](https://github.com/macbre/data-flow-graph). It uses [`data_flow_graph` Python module](https://pypi.python.org/pypi/data_flow_graph).
 
 ## Install
 
