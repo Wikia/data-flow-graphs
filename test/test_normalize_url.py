@@ -14,6 +14,12 @@ def test_normalize_mediawiki_url():
         'api:query::wkdomains'
     assert normalize_mediawiki_url('/api.php?action=query&format=json&prop=imageinfo&revids=36290&iiprop=userid%7Csize%7Cdimensions') == \
         'api:query::imageinfo'
+    assert normalize_mediawiki_url('/api.php?action=query&format=json&meta=siteinfo') == \
+        'api:query::siteinfo'
+    assert normalize_mediawiki_url('/api.php?action=query&format=json&list=allpages&apnamespace=10&apfilterredir=nonredirects&aplimit=500') == \
+        'api:query::allpages'
+    assert normalize_mediawiki_url('/api.php?action=query&format=json&titles=Template%3ADocumentation%7CTemplate%3ACC-BY-SA%7CTemplate%3ASelf%7CTemplate%3ACC-BY-SA%2Fdoc%7CTemplate%3AInfobox+event%2Fdoc%7CTemplate%3AOther+free%7CTemplate%3AInfobox+character%7CTemplate%3AInfobox+episode%2Fdoc%7CTemplate%3AInfobox+item%2Fdoc%7CTemplate%3AT%2Fpiece%2Fdoc%7CTemplate%3APermission%2Fdoc%7CTemplate%3AInfobox+episode%7CTemplate%3A%21%21%2Fdoc%7CTemplate%3ANavbox%2Fdoc%7CTemplate%3AFairuse%2Fdoc%7CTemplate%3AQuote%2Fdoc%7CTemplate%3AInfobox+location%7CTemplate%3AInfobox+quest%2Fdoc%7CTemplate%3AInfobox+quest%7CTemplate%3ACc-by-sa-3.0%7CTemplate%3ASelf%2Fdoc%7CTemplate%3ANavbox%7CTemplate%3AOther+free%2Fdoc%7CTemplate%3ADelete%7CTemplate%3APD%7CTemplate%3AFrom+Wikimedia%2Fdoc%7CTemplate%3AInfobox+book%2Fdoc%7CTemplate%3A%21%2Fdoc%7CTemplate%3AT%2Fpiece%7CTemplate%3AT%2Fdoc%7CTemplate%3APermission%7CTemplate%3ADelete%2Fdoc%7CTemplate%3AFrom+Wikimedia%7CTemplate%3AInfobox+book%7CTemplate%3ADocumentation%2Fdoc%7CTemplate%3A%21%7CTemplate%3AInfobox+location%2Fdoc%7CTemplate%3APD%2Fdoc%7CTemplate%3AInfobox+character%2Fdoc%7CTemplate%3AInfobox+event%7CTemplate%3AInfobox+album%2Fdoc%7CTemplate%3AInfobox+album%7CTemplate%3ADisambig%2Fdoc%7CTemplate%3A%21%21%7CTemplate%3AInfobox+item%7CTemplate%3AFairuse%7CTemplate%3AQuote%7CTemplate%3ADisambig%7CTemplate%3ACc-by-sa-3.0%2Fdoc%7CTemplate%3AT') == \
+        'api:query'
 
     # Nirvana API
     assert normalize_mediawiki_url('/wikia.php?controller=MercuryApi&method=getWikiVariables') == \
