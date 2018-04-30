@@ -57,7 +57,8 @@ def normalize_pandora_url(url):
         method = ''
 
     # /cache/c087d8b857cfdc9c7309e35a0c8d4cf7
-    if service == 'cache':
+    # /template-classification-storage/40245/15504
+    if service in ['cache', 'template-classification-storage']:
         method = ''
 
     print(url, path, service, method)

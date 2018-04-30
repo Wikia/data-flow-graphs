@@ -48,5 +48,7 @@ def test_normalize_pandora_url():
         'pandora:static-assets::image'
     assert normalize_pandora_url('/discussion/997342/threads?page=0&limit=1&viewableOnly=true') == \
         'pandora:discussion::threads'
+    assert normalize_pandora_url('/template-classification-storage/40245/15504') == \
+        'pandora:template-classification'
     assert normalize_pandora_url('/api/v1/status') == \
         'pandora:api::v1'
