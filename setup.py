@@ -25,6 +25,7 @@ setup(
         'console_scripts': [
             # reports
             'http_requests_graph=graphs.http_requests:main',
+            'http_pandora_mediawiki=graphs.http_pandora_mediawiki:main',
         ],
     }
 )
