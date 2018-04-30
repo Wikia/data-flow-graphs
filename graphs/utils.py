@@ -61,5 +61,5 @@ def normalize_pandora_url(url):
     if service in ['cache', 'template-classification-storage']:
         method = ''
 
-    print(url, path, service, method)
+    # print(url, path, service, method)
     return 'pandora:{}::{}'.format(service, method).rstrip(':')
