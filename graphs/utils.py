@@ -8,6 +8,8 @@ except ImportError:
     # Py2.7
     from urlparse import urlparse, parse_qs
 
+import re
+
 
 def normalize_mediawiki_url(url):
     """
@@ -35,3 +37,28 @@ def normalize_mediawiki_url(url):
 
     # print(url, parsed, query_params)
     raise ValueError('Provided URL has not been matched')
+
+
+def normalize_pandora_url(url):
+    """
+    :type url str
+    :rtype: str
+    :raise: ValueError
+    """
+    # user-attribute/user/3131641
+    # discussion/1233832/threads
+    path = str(urlparse(url).path).lstrip('/')
+    path = re.sub(r'/\d+', '', path)
+
+    try:
+        (service, method) = path.split('/')[:2]
+    except ValueError:
+        service = path.split('/').pop()
+        method = ''
+
+    # /cache/c087d8b857cfdc9c7309e35a0c8d4cf7
+    if service == 'cache':
+        method = ''
+
+    print(url, path, service, method)
+    return 'pandora:{}::{}'.format(service, method).rstrip(':')

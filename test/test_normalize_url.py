@@ -1,4 +1,4 @@
-from graphs.utils import normalize_mediawiki_url
+from graphs.utils import normalize_mediawiki_url, normalize_pandora_url
 
 
 def test_normalize_mediawiki_url():
@@ -24,3 +24,21 @@ def test_normalize_mediawiki_url():
     # other MediaWiki URLs
     assert normalize_mediawiki_url('/wiki/Special:HealthCheck') == \
         'mediawiki:Special:HealthCheck'
+
+
+def test_normalize_pandora_url():
+    # service URLs
+    assert normalize_pandora_url('/user-attribute/user/3131641') == \
+        'pandora:user-attribute::user'
+    assert normalize_pandora_url('/helios/info?code=dXuXSqjbQQqndeUPQ8EURA&noblockcheck=1') == \
+        'pandora:helios::info'
+    assert normalize_pandora_url('/discussion/1233832/threads?limit=10&sortKey=creation_date&sortDirection=descending&viewableOnly=1') == \
+        'pandora:discussion::threads'
+    assert normalize_pandora_url('/user-preference/25350887') == \
+        'pandora:user-preference'
+    assert normalize_pandora_url('/cache/c087d8b857cfdc9c7309e35a0c8d4cf7') == \
+        'pandora:cache'
+    assert normalize_pandora_url('/discussion/997342/threads?page=0&limit=1&viewableOnly=true') == \
+        'pandora:discussion::threads'
+    assert normalize_pandora_url('/api/v1/status') == \
+        'pandora:api::v1'
