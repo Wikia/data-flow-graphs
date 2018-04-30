@@ -103,3 +103,4 @@ ENV/
 *.swp
 .idea/
 env*/
+.pytest_cache/
