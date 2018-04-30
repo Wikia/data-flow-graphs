@@ -102,3 +102,4 @@ ENV/
 
 *.swp
 .idea/
+env*/

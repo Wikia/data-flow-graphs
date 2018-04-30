@@ -5,8 +5,10 @@ https://github.com/Wikia/app/blob/d10c323c028406321dabe568132726cb4af7504b/inclu
 
 https://macbre.github.io/data-flow-graph/gist.html#3ac2c20a4e059ab263c4c92507d18e26
 """
+from __future__ import print_function
+
 from wikia.common.kibana import Kibana
-from .utils import format_tsv_entry
+from data_flow_graph import format_tsv_line
 
 PERIOD = 3600
 
@@ -21,9 +23,9 @@ def main():
     max_count = max([item['count'] for item in stats.values()])
     sum_count = sum([item['count'] for item in stats.values()])
 
-    print '# HTTP requests sent by MediaWiki grouped by caller ({} requests analyzed)'.format(sum_count)
+    print('# HTTP requests sent by MediaWiki grouped by caller ({} requests analyzed)'.format(sum_count))
 
-    for caller, metrics in stats.iteritems():
+    for caller, metrics in stats.items():
         # Wikia\\Search\\Services\\ESFandomSearchService:select
         # template-classification-storage
         caller = caller.replace('{closure}', '').strip('\\')
@@ -44,7 +46,7 @@ def main():
 
         weight = 1. * metrics['count'] / max_count
 
-        print format_tsv_entry(source='mediawiki-app', edge=caller, dest=caller, weight=weight, metadata=metadata)
+        print(format_tsv_line(source='mediawiki-app', edge=caller, target=caller, value=weight, metadata=metadata))
 
     # inbound traffic
     stats = Kibana(period=PERIOD, index_prefix='logstash-mediawiki').get_aggregations(
@@ -55,9 +57,9 @@ def main():
     max_count = max([item['count'] for item in stats.values()])
     sum_count = sum([item['count'] for item in stats.values()])
 
-    print '# Internal HTTP requests received by MediaWiki grouped by caller ({} requests analyzed)'.format(sum_count)
+    print('# Internal HTTP requests received by MediaWiki grouped by caller ({} requests analyzed)'.format(sum_count))
 
-    for source, metrics in stats.iteritems():
+    for source, metrics in stats.items():
         qps = 1. * metrics['count'] / PERIOD
 
         # this request is not frequent enough
@@ -70,7 +72,7 @@ def main():
 
         weight = 1. * metrics['count'] / max_count
 
-        print format_tsv_entry(source=source, edge=source, dest='mediawiki-app', weight=weight, metadata=metadata)
+        print(format_tsv_line(source=source, edge=source, target='mediawiki-app', value=weight, metadata=metadata))
 
 
 if __name__ == '__main__':
