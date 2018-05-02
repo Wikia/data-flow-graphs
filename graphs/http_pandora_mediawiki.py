@@ -107,7 +107,7 @@ def get_pandora_flow_graph(limit, period):
 
 def main():
     http_mw = get_mediawiki_flow_graph(limit=50000, period=3600)
-    http_pandora = get_pandora_flow_graph(limit=50000, period=3600)
+    http_pandora = get_pandora_flow_graph(limit=250000, period=3600)
 
     # generate TSV files
     with open('output/http_mediawiki.tsv', 'wt') as fp:
