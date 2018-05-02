@@ -4,7 +4,7 @@ This script will generate a data-flow-graph of HTTP communication reaching Media
 from __future__ import print_function
 
 from data_flow_graph import format_tsv_lines, format_graphviz_lines, logs_map_and_reduce
-from wikia.common.kibana import Kibana
+from wikia_common_kibana import Kibana
 
 from .utils import normalize_mediawiki_url, normalize_pandora_url
 
