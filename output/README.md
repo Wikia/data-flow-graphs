@@ -13,7 +13,7 @@ http_pandora_mediawiki
 
 > See [`data-flow-graph` repository](https://github.com/macbre/data-flow-graph/tree/master/examples#gv-file) for more examples
 
-`apt-get install graphviz` and the run:
+`apt-get install graphviz` and then run:
 
 ```
 dot http_mediawiki_pandora.gv -T svg > http_mediawiki_pandora.svg
