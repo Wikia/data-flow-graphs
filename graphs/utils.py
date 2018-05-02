@@ -3,7 +3,7 @@ A set of helper functions
 """
 try:
     # Py3
-    from urllib import parse as urlparse, parse_qs
+    from urllib.parse import urlparse, parse_qs
 except ImportError:
     # Py2.7
     from urlparse import urlparse, parse_qs

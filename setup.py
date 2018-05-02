@@ -10,7 +10,7 @@ setup(
     author='macbre',
     author_email='macbre@wikia-inc.com',
     install_requires=[
-        'wikia-common-kibana==2.2.1',
+        'wikia-common-kibana==2.2.3',
         'data_flow_graph==0.3'
     ],
     extras_require={
