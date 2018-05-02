@@ -3,7 +3,7 @@ This script will generate a data-flow-graph of HTTP communication reaching Media
 """
 from __future__ import print_function
 
-from data_flow_graph import format_tsv_line, logs_map_and_reduce
+from data_flow_graph import format_tsv_lines, format_graphviz_lines, logs_map_and_reduce
 from wikia.common.kibana import Kibana
 
 from .utils import normalize_mediawiki_url, normalize_pandora_url
@@ -13,10 +13,8 @@ def get_mediawiki_flow_graph(limit, period):
     """
     :type limit int
     :type period int
-    :rtype: list[str]
+    :rtype: list[dict]
     """
-    lines = list()
-
     # https://kibana5.wikia-inc.com/goto/e6ab16f694b625d5b87833ae794f5989
     # goreplay is running in RES (check SJC logs only)
     rows = Kibana(period=period, index_prefix='logstash-mediawiki').query_by_string(
@@ -24,8 +22,6 @@ def get_mediawiki_flow_graph(limit, period):
               'AND @fields.http_url_path: *',
         limit=limit
     )
-
-    lines.append('# Internal requests to MediaWiki (from {} entries)'.format(len(rows)))
 
     # extract required fields only
     # (u'user-permissions', 'api:query::users')
@@ -55,28 +51,21 @@ def get_mediawiki_flow_graph(limit, period):
             'metadata': '{} requests'.format(len(items))
         }
 
-    entries = logs_map_and_reduce(rows, _map, _reduce)
-    lines += [format_tsv_line(**entry) for entry in entries]
-
-    return lines
+    return logs_map_and_reduce(rows, _map, _reduce)
 
 
 def get_pandora_flow_graph(limit, period):
     """
     :type limit int
     :type period int
-    :rtype: list[str]
+    :rtype: list[dict]
     """
-    lines = list()
-
     # https://kibana.wikia-inc.com/goto/3aef04fa1f9e55df5cc4c3031671ecab
     # k8s-ingress access logs, internal traffic
     rows = Kibana(period=period, index_prefix='logstash-k8s-ingress-controller').query_by_string(
         query='NOT request_Fastly-Client-Ip: * AND request_User-Agent: * AND RequestHost: "prod.sjc.k8s.wikia.net"',
         limit=limit
     )
-
-    lines.append('# Kubernetes internal requests to Pandora services (from {} entries)'.format(len(rows)))
 
     # extract required fields only
     # ('mediawiki', 'pandora:helios::info')
@@ -113,13 +102,20 @@ def get_pandora_flow_graph(limit, period):
             'metadata': '{} requests'.format(len(items))
         }
 
-    entries = logs_map_and_reduce(rows, _map, _reduce)
-    lines += [format_tsv_line(**entry) for entry in entries]
-
-    return lines
+    return logs_map_and_reduce(rows, _map, _reduce)
 
 
 def main():
-    print('\n'.join(get_mediawiki_flow_graph(limit=10000, period=3600)))
-    print('\n')
-    print('\n'.join(get_pandora_flow_graph(limit=10000, period=3600)))
+    http_mw = get_mediawiki_flow_graph(limit=10000, period=3600)
+    http_pandora = get_pandora_flow_graph(limit=10000, period=3600)
+
+    # generate TSV files
+    with open('output/http_mediawiki.tsv', 'wt') as fp:
+        fp.writelines(format_tsv_lines(http_mw))
+
+    with open('output/http_pandora.tsv', 'wt') as fp:
+        fp.writelines(format_tsv_lines(http_pandora))
+
+    # generate GraphViz file
+    with open('output/http_mediawiki_pandora.gv', 'wt') as fp:
+        fp.writelines(format_graphviz_lines(http_mw + http_pandora))
