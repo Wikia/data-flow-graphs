@@ -16,5 +16,7 @@ http_pandora_mediawiki
 `apt-get install graphviz` and the run:
 
 ```
-
+dot http_mediawiki_pandora.gv -T svg > http_mediawiki_pandora.svg
 ```
+
+![](https://raw.githubusercontent.com/Wikia/data-flow-graphs/master/output/http_mediawiki_pandora.png)
