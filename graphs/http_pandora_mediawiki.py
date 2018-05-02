@@ -48,7 +48,7 @@ def get_mediawiki_flow_graph(limit, period):
             'edge': 'http',
             'target': target,
             # the following is optional
-            'metadata': '{} requests'.format(len(items))
+            'metadata': '{:.3f} reqs per sec'.format(1. * len(items) / period)
         }
 
     return logs_map_and_reduce(rows, _map, _reduce)
@@ -99,15 +99,15 @@ def get_pandora_flow_graph(limit, period):
             'edge': 'http',
             'target': target,
             # the following is optional
-            'metadata': '{} requests'.format(len(items))
+            'metadata': '{:.3f} reqs per sec'.format(1. * len(items) / period)
         }
 
     return logs_map_and_reduce(rows, _map, _reduce)
 
 
 def main():
-    http_mw = get_mediawiki_flow_graph(limit=10000, period=3600)
-    http_pandora = get_pandora_flow_graph(limit=10000, period=3600)
+    http_mw = get_mediawiki_flow_graph(limit=50000, period=3600)
+    http_pandora = get_pandora_flow_graph(limit=50000, period=3600)
 
     # generate TSV files
     with open('output/http_mediawiki.tsv', 'wt') as fp:
