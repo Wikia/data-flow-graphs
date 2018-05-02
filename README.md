@@ -1,4 +1,7 @@
 # data-flow-graphs
+
+[![Build Status](https://travis-ci.org/Wikia/data-flow-graphs.svg?branch=master)](https://travis-ci.org/Wikia/data-flow-graphs)
+
 An open repository with scripts used to generate data-flow-graphs
 
 ![http_mediawiki_pandora svg](https://user-images.githubusercontent.com/1929317/39514518-af6bd5b2-4df7-11e8-95e8-def4ea279bb5.png)
