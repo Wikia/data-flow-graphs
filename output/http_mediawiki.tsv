@@ -1,1 +1,24 @@
-user-permissions	http	api:query::users	1.0000	9.223 reqs per secparsoid-feeder-worker	http	api:parse::text	0.0053	0.049 reqs per secnagios	http	mediawiki:Main_Page	0.1283	1.184 reqs per secuser-permissions	http	api:query::wkdomains	0.0777	0.717 reqs per secnagios	http	mediawiki:Special:HealthCheck	0.1295	1.195 reqs per secinternal	http	nirvana:EmailControllerDiscussionReply::handle	0.0326	0.301 reqs per secdiscussions-sitemap	http	api:query::wkdomains	0.0742	0.684 reqs per secmercury	http	nirvana:MercuryApi::getWikiVariables	0.0158	0.146 reqs per secimage-review	http	api:query::imageinfo	0.0133	0.123 reqs per secpage-indexer	http	api:query::wkdomains	0.0079	0.073 reqs per secimage-review	http	api:query::wkdomains	0.0062	0.057 reqs per secon-site-notifications	http	api:query::wkdomains	0.0006	0.006 reqs per secuser-registration	http	api:query::wkdomains	0.0036	0.033 reqs per secparsoid-feeder-worker	http	api:query::categories	0.0045	0.041 reqs per secparsoid-feeder-worker	http	api:query::wkdomains	0.0007	0.006 reqs per secdiscussion	http	api:query::wkdomains	0.0024	0.022 reqs per secon-site-notifications	http	api:query::siteinfo	0.0007	0.007 reqs per sectemplate-type-copier-worker	http	api:query	0.0002	0.001 reqs per secinternal	http	nirvana:EmailControllerDiscussionUpvote::handle	0.0005	0.004 reqs per sectemplate-type-copier-worker	http	api:query::siteinfo	0.0005	0.005 reqs per sectemplate-type-copier-worker	http	api:query::wkdomains	0.0002	0.001 reqs per secmercury	http	nirvana:EmailConfirmation::postEmailConfirmation	0.0010	0.009 reqs per sectemplate-type-copier-worker	http	api:query::allpages	0.0002	0.002 reqs per sec
+user-permissions	http	api:query::users	1.0000	10.004 reqs per sec
+discussions-sitemap	http	api:query::wkdomains	0.0394	0.394 reqs per sec
+nagios	http	mediawiki:Special:HealthCheck	0.1084	1.084 reqs per sec
+parsoid-feeder-worker	http	api:parse::text	0.0056	0.056 reqs per sec
+user-permissions	http	api:query::wkdomains	0.0683	0.683 reqs per sec
+nagios	http	mediawiki:Main_Page	0.1123	1.124 reqs per sec
+internal	http	nirvana:EmailControllerDiscussionReply::handle	0.0130	0.130 reqs per sec
+page-indexer	http	api:query::wkdomains	0.0089	0.089 reqs per sec
+mercury	http	nirvana:MercuryApi::getWikiVariables	0.0110	0.110 reqs per sec
+on-site-notifications	http	api:query::siteinfo	0.0006	0.006 reqs per sec
+template-type-copier-worker	http	api:query	0.0002	0.002 reqs per sec
+image-review	http	api:query::imageinfo	0.0059	0.059 reqs per sec
+parsoid-feeder-worker	http	api:query::wkdomains	0.0009	0.009 reqs per sec
+parsoid-feeder-worker	http	api:query::categories	0.0054	0.054 reqs per sec
+user-registration	http	api:query::wkdomains	0.0023	0.023 reqs per sec
+discussion	http	api:query::wkdomains	0.0016	0.016 reqs per sec
+mercury	http	nirvana:EmailConfirmation::postEmailConfirmation	0.0009	0.009 reqs per sec
+template-type-copier-worker	http	api:query::allpages	0.0002	0.002 reqs per sec
+template-type-copier-worker	http	api:query::siteinfo	0.0003	0.003 reqs per sec
+image-review	http	api:query::wkdomains	0.0021	0.021 reqs per sec
+on-site-notifications	http	api:query::wkdomains	0.0006	0.006 reqs per sec
+template-type-copier-worker	http	api:query::wkdomains	0.0002	0.002 reqs per sec
+internal	http	nirvana:EmailControllerDiscussionUpvote::handle	0.0002	0.003 reqs per sec
+user-permissions	http	mediawiki:Special:CloseWiki/information/fictionalbattleomniverse	0.0000	0.000 reqs per sec

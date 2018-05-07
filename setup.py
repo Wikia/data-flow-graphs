@@ -11,7 +11,7 @@ setup(
     author_email='macbre@wikia-inc.com',
     install_requires=[
         'wikia-common-kibana==2.2.3',
-        'data_flow_graph==0.3'
+        'data_flow_graph==0.4'
     ],
     extras_require={
         'dev': [
