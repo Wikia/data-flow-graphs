@@ -64,3 +64,23 @@ def normalize_pandora_url(url):
 
     # print(url, path, service, method)
     return 'pandora:{}::{}'.format(service, method).rstrip(':')
+
+
+def is_mobile_app_user_agent(user_agent):
+    """
+    :type user_agent str
+    :rtype: bool
+    """
+    # starwars/2.9.6 (Android: 24)
+    if 'Android' in user_agent and re.match(r'[\w\s\d]+/[\d.]+ \(Android: \d+\)', user_agent):
+        return True
+
+    # FandomEnterpriseApp/1.5.5 (iPhone; iOS 11.2; Scale/2.00)
+    if user_agent.startswith('FandomEnterpriseApp/'):
+        return True
+
+    # foobar/2.9 (iPhone; iOS 11.4; Scale/2.00)'
+    if 'iPhone' in user_agent and re.match(r'[\w\s\d]+/[\d.]+ \(iPhone; iOS \d+', user_agent):
+        return True
+
+    return False
