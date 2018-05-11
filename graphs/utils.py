@@ -23,7 +23,8 @@ def normalize_mediawiki_url(url):
     if url.startswith('/api.php'):
         return 'api:{action}::{type}'.format(
             action=query_params['action'][0],
-            type=query_params.get('list', query_params.get('meta', query_params.get('prop', [''])))[0]
+            type=query_params.get('list',
+                                  query_params.get('meta', query_params.get('prop', [''])))[0]
         ).rstrip(':')
     elif url.startswith('/wikia.php'):
         return 'nirvana:{controller}::{method}'.format(

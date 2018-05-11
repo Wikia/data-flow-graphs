@@ -1,5 +1,6 @@
 """
-This script will generate a data-flow-graph of HTTP communication reaching MediaWiki and Pandora (Kubernetes)
+This script will generate a data-flow-graph of HTTP communication
+reaching MediaWiki and Pandora (Kubernetes)
 """
 from __future__ import print_function
 
@@ -18,11 +19,12 @@ def get_mediawiki_flow_graph(limit, period):
     # https://kibana5.wikia-inc.com/goto/e6ab16f694b625d5b87833ae794f5989
     # goreplay is running in RES (check SJC logs only)
     rows = Kibana(period=period, index_prefix='logstash-mediawiki').query_by_string(
-        query='"Wikia internal request" AND @fields.environment: "prod" AND @fields.datacenter: "sjc" '
+        query='"Wikia internal request" AND @fields.environment: "prod" '
+              'AND @fields.datacenter: "sjc" '
               'AND @fields.http_url_path: *',
         fields=[
-          '@context.source',
-          '@fields.http_url_path',
+            '@context.source',
+            '@fields.http_url_path',
         ],
         limit=limit
     )
@@ -67,7 +69,8 @@ def get_pandora_flow_graph(limit, period):
     # https://kibana.wikia-inc.com/goto/3aef04fa1f9e55df5cc4c3031671ecab
     # k8s-ingress access logs, internal traffic
     rows = Kibana(period=period, index_prefix='logstash-k8s-ingress-controller').query_by_string(
-        query='NOT request_Fastly-Client-Ip: * AND request_User-Agent: * AND RequestHost: "prod.sjc.k8s.wikia.net"',
+        query='NOT request_Fastly-Client-Ip: * AND request_User-Agent: * '
+              'AND RequestHost: "prod.sjc.k8s.wikia.net"',
         fields=[
             'request_User-Agent',
             'RequestPath',
@@ -114,16 +117,19 @@ def get_pandora_flow_graph(limit, period):
 
 
 def main():
+    """
+    Generate the files
+    """
     http_mw = get_mediawiki_flow_graph(limit=50000, period=3600)
     http_pandora = get_pandora_flow_graph(limit=250000, period=3600)
 
     # generate TSV files
-    with open('output/http_mediawiki.tsv', 'wt') as fp:
-        fp.writelines(format_tsv_lines(http_mw))
+    with open('output/http_mediawiki.tsv', 'wt') as handler:
+        handler.writelines(format_tsv_lines(http_mw))
 
-    with open('output/http_pandora.tsv', 'wt') as fp:
-        fp.writelines(format_tsv_lines(http_pandora))
+    with open('output/http_pandora.tsv', 'wt') as handler:
+        handler.writelines(format_tsv_lines(http_pandora))
 
     # generate GraphViz file
-    with open('output/http_mediawiki_pandora.gv', 'wt') as fp:
-        fp.writelines(format_graphviz_lines(http_mw + http_pandora))
+    with open('output/http_mediawiki_pandora.gv', 'wt') as handler:
+        handler.writelines(format_graphviz_lines(http_mw + http_pandora))
