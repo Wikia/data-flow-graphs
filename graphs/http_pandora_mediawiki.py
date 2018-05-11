@@ -20,6 +20,10 @@ def get_mediawiki_flow_graph(limit, period):
     rows = Kibana(period=period, index_prefix='logstash-mediawiki').query_by_string(
         query='"Wikia internal request" AND @fields.environment: "prod" AND @fields.datacenter: "sjc" '
               'AND @fields.http_url_path: *',
+        fields=[
+          '@context.source',
+          '@fields.http_url_path',
+        ],
         limit=limit
     )
 
@@ -64,6 +68,10 @@ def get_pandora_flow_graph(limit, period):
     # k8s-ingress access logs, internal traffic
     rows = Kibana(period=period, index_prefix='logstash-k8s-ingress-controller').query_by_string(
         query='NOT request_Fastly-Client-Ip: * AND request_User-Agent: * AND RequestHost: "prod.sjc.k8s.wikia.net"',
+        fields=[
+            'request_User-Agent',
+            'RequestPath',
+        ],
         limit=limit
     )
 
