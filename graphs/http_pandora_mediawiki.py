@@ -125,9 +125,11 @@ def main():
 
     # generate TSV files
     with open('output/http_mediawiki.tsv', 'wt') as handler:
+        handler.write('# HTTP requests sent to MediaWiki\n')
         handler.writelines(format_tsv_lines(http_mw))
 
     with open('output/http_pandora.tsv', 'wt') as handler:
+        handler.write('# HTTP requests sent to Pandora services\n')
         handler.writelines(format_tsv_lines(http_pandora))
 
     # generate GraphViz file
