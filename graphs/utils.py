@@ -37,7 +37,7 @@ def normalize_mediawiki_url(url):
         )
 
     # print(url, parsed, query_params)
-    raise ValueError('Provided URL has not been matched')
+    raise ValueError('Provided URL <%s> has not been matched' % url)
 
 
 def normalize_pandora_url(url):

@@ -1,0 +1,20 @@
+# HTTP requests sent to MediaWiki from Mobile Apps
+mobile-app	http	nirvana:ArticlesApi::getDetails	1.0000	1.037 reqs per sec
+mobile-app	http	nirvana:CuratedContent::getPage	0.8472	0.878 reqs per sec
+mobile-app	http	nirvana:GameGuides::getResourcesUrl	0.2587	0.268 reqs per sec
+mobile-app	http	nirvana:ArticlesApi::getList	0.2447	0.254 reqs per sec
+mobile-app	http	nirvana:ArticlesApi::getTop	0.3254	0.337 reqs per sec
+mobile-app	http	nirvana:SearchSuggestionsApi::getList	0.5921	0.614 reqs per sec
+mobile-app	http	nirvana:CuratedContent::getList	0.2494	0.259 reqs per sec
+mobile-app	http	nirvana:WikisApi::getDetails	0.1319	0.137 reqs per sec
+mobile-app	http	nirvana:VideoHandler::getVideoList	0.1472	0.153 reqs per sec
+mobile-app	http	api:query::info	0.0375	0.039 reqs per sec
+mobile-app	http	nirvana:SearchApi::getList	0.0966	0.100 reqs per sec
+mobile-app	http	nirvana:LyricsApi::getArtist	0.0004	0.000 reqs per sec
+mobile-app	http	nirvana:LyricsApi::getSong	0.0051	0.005 reqs per sec
+mobile-app	http	nirvana:LyricsApi::searchLyrics	0.0011	0.001 reqs per sec
+mobile-app	http	nirvana:GameGuides::getList	0.0096	0.010 reqs per sec
+mobile-app	http	nirvana:LyricsApi::searchSong	0.0024	0.003 reqs per sec
+mobile-app	http	nirvana:Lightbox::getMediaDetail	0.0170	0.018 reqs per sec
+mobile-app	http	nirvana:LyricsApi::searchArtist	0.0016	0.002 reqs per sec
+mobile-app	http	nirvana:LyricsApi::getAlbum	0.0016	0.002 reqs per sec

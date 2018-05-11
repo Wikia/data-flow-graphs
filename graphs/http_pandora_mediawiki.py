@@ -7,7 +7,7 @@ from __future__ import print_function
 from data_flow_graph import format_tsv_lines, format_graphviz_lines, logs_map_and_reduce
 from wikia_common_kibana import Kibana
 
-from .utils import normalize_mediawiki_url, normalize_pandora_url
+from .utils import normalize_mediawiki_url, normalize_pandora_url, is_mobile_app_user_agent
 
 
 def get_mediawiki_flow_graph(limit, period):
@@ -51,6 +51,47 @@ def get_mediawiki_flow_graph(limit, period):
 
         return {
             'source': source if source != '1' else 'internal',
+            'edge': 'http',
+            'target': target,
+            # the following is optional
+            'metadata': '{:.3f} reqs per sec'.format(1. * len(items) / period)
+        }
+
+    return logs_map_and_reduce(rows, _map, _reduce)
+
+
+def get_mobile_apps_flow_graph(limit, period):
+    """
+    :type limit int
+    :type period int
+    :rtype: list[dict]
+    """
+    rows = Kibana(period=period, index_prefix='logstash-apache-access-log').query_by_string(
+        query='(agent: "Android" OR agent: "iOS") AND NOT agent: "Chrome" '
+              'AND @source_host.keyword: /ap-s.*/',
+        fields=[
+            'agent',
+            'request',
+        ],
+        limit=limit
+    )
+
+    # extract the request URL only
+    # and filter out non-mobile app requests
+    rows = [
+        normalize_mediawiki_url(row.get('request'))
+        for row in rows if is_mobile_app_user_agent(row.get('agent'))
+    ]
+
+    # process the logs
+    def _map(item):
+        return item
+
+    def _reduce(items):
+        target = items[0]
+
+        return {
+            'source': 'mobile-app',
             'edge': 'http',
             'target': target,
             # the following is optional
@@ -120,10 +161,15 @@ def main():
     """
     Generate the files
     """
+    http_mobile_apps = get_mobile_apps_flow_graph(limit=50000, period=7200)
     http_mw = get_mediawiki_flow_graph(limit=50000, period=3600)
     http_pandora = get_pandora_flow_graph(limit=250000, period=3600)
 
     # generate TSV files
+    with open('output/http_mobile_apps.tsv', 'wt') as handler:
+        handler.write('# HTTP requests sent to MediaWiki from Mobile Apps\n')
+        handler.writelines(format_tsv_lines(http_mobile_apps))
+
     with open('output/http_mediawiki.tsv', 'wt') as handler:
         handler.write('# HTTP requests sent to MediaWiki\n')
         handler.writelines(format_tsv_lines(http_mw))
@@ -134,4 +180,4 @@ def main():
 
     # generate GraphViz file
     with open('output/http_mediawiki_pandora.gv', 'wt') as handler:
-        handler.writelines(format_graphviz_lines(http_mw + http_pandora))
+        handler.writelines(format_graphviz_lines(http_mobile_apps + http_mw + http_pandora))
