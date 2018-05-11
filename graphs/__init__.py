@@ -1,3 +1,6 @@
+"""
+Setup logging
+"""
 import logging
 
 logging.basicConfig(

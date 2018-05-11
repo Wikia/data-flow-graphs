@@ -10,7 +10,7 @@ setup(
     author='macbre',
     author_email='macbre@wikia-inc.com',
     install_requires=[
-        'wikia-common-kibana==2.2.3',
+        'wikia-common-kibana==2.2.5',
         'data_flow_graph==0.4'
     ],
     extras_require={
@@ -24,7 +24,6 @@ setup(
     entry_points={
         'console_scripts': [
             # reports
-            'http_requests_graph=graphs.http_requests:main',
             'http_pandora_mediawiki=graphs.http_pandora_mediawiki:main',
         ],
     }
