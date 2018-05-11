@@ -3,4 +3,4 @@ python:
   - "2.7"
   - "3.4"
 install: make install
-script: make tests
+script: make tests && make lint
