@@ -6,3 +6,6 @@ lint:
 
 install:
 	pip install -e .[dev]
+
+generate:
+	http_pandora_mediawiki
