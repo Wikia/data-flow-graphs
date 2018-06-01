@@ -16,4 +16,6 @@ A set of Python scripts used to generate TSV files that we use to [visualize how
 
 ## Data flow graphs
 
-* [Internal HTTP requests to MediaWiki and Pandora services](https://github.com/Wikia/data-flow-graphs/blob/master/output/http_mediawiki_pandora.svg) (`http_pandora_mediawiki`, powered by GraphViz)
+* [Internal HTTP requests to MediaWiki and Pandora services](https://github.com/Wikia/data-flow-graphs/blob/master/output/http_mediawiki_pandora.svg) (`http_pandora_mediawiki`, powered by GraphViz) / [PNG version](http://wikia-data-flow-graphs.s3.amazonaws.com/http_mediawiki_pandora.png)
+
+These are refreshed daily via a cronjob and uploaded to a public Amazon's S3 bucket as both TSV and PNG files.
