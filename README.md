@@ -23,4 +23,5 @@ These are refreshed daily via a cronjob and uploaded to a public Amazon's S3 buc
 * [Mobile apps requests sent to MediaWiki](https://macbre.github.io/data-flow-graph/tsv.html#https://s3.amazonaws.com/wikia-data-flow-graphs/http_mobile_apps.tsv)
 * [HTTP requests sent to Pandora services](https://macbre.github.io/data-flow-graph/tsv.html#https://s3.amazonaws.com/wikia-data-flow-graphs/http_pandora.tsv)
 * [HTTP requests sent to MediaWiki](https://macbre.github.io/data-flow-graph/tsv.html#https://s3.amazonaws.com/wikia-data-flow-graphs/http_mediawiki.tsv)
+* [MediaWiki tasks executed by Celery](https://macbre.github.io/data-flow-graph/tsv.html#https://s3.amazonaws.com/wikia-data-flow-graphs/http_celery.tsv)
 * [Pandora and mobile apps requests sent to MediaWiki](http://wikia-data-flow-graphs.s3.amazonaws.com/http_mediawiki_pandora.png)
