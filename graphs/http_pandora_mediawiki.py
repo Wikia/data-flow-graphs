@@ -1,6 +1,9 @@
 """
 This script will generate a data-flow-graph of HTTP communication
 reaching MediaWiki and Pandora (Kubernetes)
+
+This includes requests hitting MediaWiki that were sent by
+mobile-wiki, Mobile Apps, Pandora and Celery
 """
 from __future__ import print_function
 
@@ -157,6 +160,46 @@ def get_pandora_flow_graph(limit, period):
     return logs_map_and_reduce(rows, _map, _reduce)
 
 
+def get_celery_tasks_flow_graph(limit, period):
+    """
+    :type limit int
+    :type period int
+    :rtype: list[dict]
+    """
+    # @see https://kibana5.wikia-inc.com/goto/d877bf3caf4204b9b5fdc5f8864f4ce2
+    rows = Kibana(period=period, index_prefix='logstash-mediawiki').query_by_string(
+        query='@message: "BaseTask::execute" AND @fields.datacenter: "sjc" '
+              'AND @fields.environment: "prod"',
+        fields=[
+            '@context.task_call',
+        ],
+        limit=limit
+    )
+
+    # extract the task type
+    rows = [
+        row.get('@context').get('task_call')
+        for row in rows
+    ]
+
+    # process the logs
+    def _map(item):
+        return item
+
+    def _reduce(items):
+        target = items[0]
+
+        return {
+            'source': 'celery',
+            'edge': 'http',
+            'target': 'task:{}'.format(target),
+            # the following is optional
+            'metadata': '{:.3f} calls per minute'.format(60. * len(items) / period)
+        }
+
+    return logs_map_and_reduce(rows, _map, _reduce)
+
+
 def main():
     """
     Generate the files
@@ -164,6 +207,7 @@ def main():
     http_mobile_apps = get_mobile_apps_flow_graph(limit=50000, period=7200)
     http_mw = get_mediawiki_flow_graph(limit=50000, period=3600)
     http_pandora = get_pandora_flow_graph(limit=250000, period=3600)
+    http_celery_tasks = get_celery_tasks_flow_graph(limit=50000, period=3600)
 
     # generate TSV files
     with open('output/http_mobile_apps.tsv', 'wt') as handler:
@@ -178,6 +222,11 @@ def main():
         handler.write('# HTTP requests sent to Pandora services\n')
         handler.writelines(format_tsv_lines(http_pandora))
 
+    with open('output/http_celery.tsv', 'wt') as handler:
+        handler.write('# HTTP requests sent to MediaWiki by Celery\n')
+        handler.writelines(format_tsv_lines(http_celery_tasks))
+
     # generate GraphViz file
     with open('output/http_mediawiki_pandora.gv', 'wt') as handler:
-        handler.writelines(format_graphviz_lines(http_mobile_apps + http_mw + http_pandora))
+        handler.writelines(format_graphviz_lines(
+            http_mobile_apps + http_mw + http_pandora + http_celery_tasks))
