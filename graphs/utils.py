@@ -9,6 +9,7 @@ except ImportError:
     from urlparse import urlparse, parse_qs
 
 import re
+from collections import OrderedDict
 
 
 def normalize_mediawiki_url(url):
@@ -84,3 +85,26 @@ def is_mobile_app_user_agent(user_agent):
         return True
 
     return False
+
+
+def get_solr_core_name(logline):
+    """
+    :type logline str
+    :rtype: str|None
+    """
+    matches = re.search(r'\[([^\]]+)\] webapp', logline)
+    return matches.group(1) if matches else None
+
+
+def get_solr_parameters(logline):
+    """
+    :type logline str
+    :rtype: OrderedDict
+    """
+    params = OrderedDict()
+    matches = re.findall(r'\s(\w+)=([^\s]+)', logline)
+
+    for match in matches:
+        params[match[0]] = match[1]
+
+    return params

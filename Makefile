@@ -9,3 +9,4 @@ install:
 
 generate:
 	http_pandora_mediawiki
+	solr

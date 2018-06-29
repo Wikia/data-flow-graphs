@@ -1,0 +1,18 @@
+digraph G {
+	graph [ center=true, margin=0.75, nodesep=0.5, ranksep=0.75, rankdir=LR ];
+	node [ shape=box, style="rounded,filled" width=0, height=0, fontname=Helvetica, fontsize=11 ];
+	edge [ fontname=Helvetica, fontsize=9 ];
+
+	// nodes
+	n1 [label="client"];
+	n2 [label="solr\nlyricsapi" group="solr" colorscheme=pastel28 color=1];
+	n3 [label="solr\nmain" group="solr" colorscheme=pastel28 color=1];
+	n4 [label="solr\nxwiki" group="solr" colorscheme=pastel28 color=1];
+
+	// edges
+	n3 -> n1 [label="2.737 reqs per sec"];
+	n1 -> n3 [label="0.017 reqs per sec"];
+	n4 -> n1 [label="0.007 reqs per sec"];
+	n1 -> n4 [label="0.014 reqs per sec"];
+	n2 -> n1 [label="0.003 reqs per sec"];
+}
