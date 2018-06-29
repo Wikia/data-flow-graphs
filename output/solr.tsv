@@ -1,0 +1,6 @@
+# Solr requests
+solr:main	http	client	1.0000	2.724 /select reqs per sec
+solr:xwiki	http	client	0.0041	0.011 /select reqs per sec
+indexer	http	solr:main	0.0063	0.017 /update reqs per sec
+indexer	http	solr:xwiki	0.0057	0.016 /update reqs per sec
+solr:lyricsapi	http	client	0.0036	0.010 /select reqs per sec

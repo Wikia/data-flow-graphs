@@ -25,6 +25,7 @@ setup(
         'console_scripts': [
             # reports
             'http_pandora_mediawiki=graphs.http_pandora_mediawiki:main',
+            'solr=graphs.solr:main',
         ],
     }
 )
