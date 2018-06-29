@@ -45,7 +45,7 @@ def get_solr_flow_graph(limit, period):
         client = 'client'  # add a user agent to the logs and identify the client based on it
 
         return {
-            'source': 'solr:{}'.format(index) if method == 'select' else client,
+            'source': 'solr:{}'.format(index) if method == 'select' else 'indexer',
             'edge': 'http',
             'target': 'solr:{}'.format(index) if method != 'select' else client,
             # the following is optional

@@ -5,14 +5,15 @@ digraph G {
 
 	// nodes
 	n1 [label="client"];
-	n2 [label="solr\nlyricsapi" group="solr" colorscheme=pastel28 color=1];
-	n3 [label="solr\nmain" group="solr" colorscheme=pastel28 color=1];
-	n4 [label="solr\nxwiki" group="solr" colorscheme=pastel28 color=1];
+	n2 [label="indexer"];
+	n3 [label="solr\nlyricsapi" group="solr" colorscheme=pastel28 color=1];
+	n4 [label="solr\nmain" group="solr" colorscheme=pastel28 color=1];
+	n5 [label="solr\nxwiki" group="solr" colorscheme=pastel28 color=1];
 
 	// edges
-	n3 -> n1 [label="2.737 reqs per sec"];
-	n1 -> n3 [label="0.017 reqs per sec"];
-	n4 -> n1 [label="0.007 reqs per sec"];
-	n1 -> n4 [label="0.014 reqs per sec"];
-	n2 -> n1 [label="0.003 reqs per sec"];
+	n4 -> n1 [label="2.734 reqs per sec"];
+	n2 -> n5 [label="0.015 reqs per sec"];
+	n5 -> n1 [label="0.009 reqs per sec"];
+	n2 -> n4 [label="0.014 reqs per sec"];
+	n3 -> n1 [label="0.006 reqs per sec"];
 }
