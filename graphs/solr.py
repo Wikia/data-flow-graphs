@@ -49,7 +49,7 @@ def get_solr_flow_graph(limit, period):
             'edge': 'http',
             'target': 'solr:{}'.format(index) if method != 'select' else client,
             # the following is optional
-            'metadata': '{:.3f} reqs per sec'.format(1. * len(items) / period)
+            'metadata': '{:.3f} /{} reqs per sec'.format(1. * len(items) / period, method)
         }
 
     return logs_map_and_reduce(rows, _map, _reduce)
