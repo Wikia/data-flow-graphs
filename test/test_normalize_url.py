@@ -31,6 +31,16 @@ def test_normalize_mediawiki_url():
     assert normalize_mediawiki_url('/wiki/Special:HealthCheck') == \
         'mediawiki:Special:HealthCheck'
 
+    # language path
+    assert normalize_mediawiki_url('/szl/api.php?action=query&format=json&list=users&usids=11536%7C25314808&usprop=groups%7Crights%7Cblockinfo') == \
+        'api:query::users'
+
+    assert normalize_mediawiki_url('/is/wiki/Special:HealthCheck') == \
+        'mediawiki:Special:HealthCheck'
+
+    assert normalize_mediawiki_url('/pt-br/wikia.php/?method=handle&controller=Email%5CController%5CDiscussionReply') == \
+        'nirvana:EmailControllerDiscussionReply::handle'
+
 
 def test_normalize_pandora_url():
     # service URLs

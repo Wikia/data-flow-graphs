@@ -18,6 +18,10 @@ def normalize_mediawiki_url(url):
     :rtype: str
     :raise: ValueError
     """
+    # remove language path
+    if not url.startswith('/wiki/'):
+        url = re.sub(r'^/[a-z\-]{2,14}/', '/', url)
+
     parsed = urlparse(url)
     query_params = parse_qs(parsed.query)
 
