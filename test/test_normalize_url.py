@@ -26,6 +26,8 @@ def test_normalize_mediawiki_url():
         'nirvana:MercuryApi::getWikiVariables'
     assert normalize_mediawiki_url('/wikia.php/?method=handle&controller=Email%5CController%5CDiscussionReply') == \
         'nirvana:EmailControllerDiscussionReply::handle'
+    assert normalize_mediawiki_url('/wikia.php?controller=Wikia%5CHelios%5CHelperController') == \
+        'nirvana:WikiaHeliosHelperController::index'
 
     # other MediaWiki URLs
     assert normalize_mediawiki_url('/wiki/Special:HealthCheck') == \

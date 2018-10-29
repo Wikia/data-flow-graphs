@@ -25,21 +25,24 @@ def normalize_mediawiki_url(url):
     parsed = urlparse(url)
     query_params = parse_qs(parsed.query)
 
-    if url.startswith('/api.php'):
-        return 'api:{action}::{type}'.format(
-            action=query_params['action'][0],
-            type=query_params.get('list',
-                                  query_params.get('meta', query_params.get('prop', [''])))[0]
-        ).rstrip(':')
-    elif url.startswith('/wikia.php'):
-        return 'nirvana:{controller}::{method}'.format(
-            controller=str(query_params['controller'][0]).replace('\\', ''),
-            method=query_params['method'][0]
-        )
-    elif url.startswith('/wiki/'):
-        return 'mediawiki:{page}'.format(
-            page=str(parsed.path).replace('/wiki/', '')
-        )
+    try:
+        if url.startswith('/api.php'):
+            return 'api:{action}::{type}'.format(
+                action=query_params['action'][0],
+                type=query_params.get('list',
+                                      query_params.get('meta', query_params.get('prop', [''])))[0]
+            ).rstrip(':')
+        elif url.startswith('/wikia.php'):
+            return 'nirvana:{controller}::{method}'.format(
+                controller=str(query_params['controller'][0]).replace('\\', ''),
+                method=query_params.get('method', ['index'])[0]
+            )
+        elif url.startswith('/wiki/'):
+            return 'mediawiki:{page}'.format(
+                page=str(parsed.path).replace('/wiki/', '')
+            )
+    except KeyError:
+        raise ValueError('Provided URL <%s> is not a valid one' % url)
 
     # print(url, parsed, query_params)
     raise ValueError('Provided URL <%s> has not been matched' % url)
