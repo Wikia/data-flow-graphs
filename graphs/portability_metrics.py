@@ -23,15 +23,23 @@ def get_portability_metrics_flow_graph(limit, period):
         period=period,
         index_prefix='logstash-other'
     ).query_by_string(
-        query='kubernetes.container_name: "portability-metric" AND ("SELECT" OR "UPDATE")',
+        query='kubernetes.labels.job-name:* AND '
+              'kubernetes.container_name: "portability-metric" AND ("SELECT" OR "UPDATE")',
         fields=[
             'log',
+            'kubernetes.labels.job-name'
         ],
         limit=limit
     )
 
-    rows = [get_portability_metrics_query(row['log']) for row in rows]
-    # print(rows)
+    entries = []
+
+    for row in rows:
+        for entry in get_portability_metrics_query(
+                row['log'], row['kubernetes']['labels']['job-name']):
+            entries.append(entry)
+
+    # print(entries)
 
     # process the logs
     def _map(item):
@@ -41,7 +49,7 @@ def get_portability_metrics_flow_graph(limit, period):
         #  ('MetricArticleProvider.py', 'UPDATE', 'articledata')
         first = items[0]
 
-        script = first[0]
+        script = 'cron:{}'.format(first[0])
         query_type = first[1]
         table_name = 'db:{}'.format(first[2])
 
@@ -51,7 +59,7 @@ def get_portability_metrics_flow_graph(limit, period):
             'target': table_name if query_type != 'SELECT' else script,
         }
 
-    return logs_map_and_reduce(rows, _map, _reduce)
+    return logs_map_and_reduce(entries, _map, _reduce)
 
 
 def main():

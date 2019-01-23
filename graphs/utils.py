@@ -123,31 +123,33 @@ def get_solr_parameters(logline):
     return params
 
 
-def get_portability_metrics_query(logline):
+def get_portability_metrics_query(logline, job_name):
     """
     :type logline str
+    :type job_name str
     :rtype: list[str, str, str]
     """
     # extract SQL query
     try:
         sql = str(re.search(r'INFO (.*)$', logline).group(1).strip())
     except AttributeError:
-        return None
+        return
 
     # remove "SQL: " prefix
     sql = sql.replace('SQL:', '').lstrip()
 
     # script name
-    try:
-        script = re.search(r'([a-z]+\.py) \*/', sql, flags=re.IGNORECASE).group(1)
-    except AttributeError:
-        # 2019-01-23 00:00:20 PortabilityData
-        script = re.search(r':\d\d\s([a-z]+)\s', logline, flags=re.IGNORECASE).group(1)
+    # portability-metric-metric-article-provider-py-1548232800
+    script_name = str(re.match(r'portability-metric-([a-z-]+)-\d+', job_name).group(1))
+    script_name = script_name.replace('-py', '.py')
 
     # SELECT, UPDATE, ...
     query_type = sql.split(' ')[0].upper()
 
     # get query metadata
-    table = get_query_tables(sql)[0]
+    for table in get_query_tables(sql):
+        # ignore one letter table aliases
+        if len(table) == 1:
+            continue
 
-    return script, query_type, table
+        yield script_name, query_type, table
