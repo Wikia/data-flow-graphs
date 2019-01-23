@@ -1,5 +1,5 @@
 tests:
-	py.test
+	py.test -vv
 
 lint:
 	pylint graphs/

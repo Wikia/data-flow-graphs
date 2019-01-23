@@ -5,6 +5,9 @@ all:
 	dot solr.gv -T svg > solr.svg
 	dot solr.gv -T png > solr.png
 
+	dot portability_metrics.gv -T svg > portability_metrics.svg
+	dot portability_metrics.gv -T png > portability_metrics.png
+
 publish:
 	s3cmd -c /etc/s3cmd/amazon_prod.cfg put *.tsv s3://wikia-data-flow-graphs/ --acl-public
 	s3cmd -c /etc/s3cmd/amazon_prod.cfg put *.png s3://wikia-data-flow-graphs/ --acl-public
