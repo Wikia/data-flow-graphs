@@ -32,16 +32,16 @@ def normalize_mediawiki_url(url):
                 type=query_params.get('list',
                                       query_params.get('meta', query_params.get('prop', [''])))[0]
             ).rstrip(':')
-        elif url.startswith('/wikia.php'):
+        if url.startswith('/wikia.php'):
             return 'nirvana:{controller}::{method}'.format(
                 controller=str(query_params['controller'][0]).replace('\\', ''),
                 method=query_params.get('method', ['index'])[0]
             )
-        elif url.startswith('/wiki/'):
+        if url.startswith('/wiki/'):
             return 'mediawiki:{page}'.format(
                 page=str(parsed.path).replace('/wiki/', '')
             )
-        elif url.startswith('/v1/'):
+        if url.startswith('/v1/'):
             return 'api:{controller}'.format(
                 controller=url.split('/')[2]
             )
