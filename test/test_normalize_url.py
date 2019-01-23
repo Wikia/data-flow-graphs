@@ -43,6 +43,9 @@ def test_normalize_mediawiki_url():
     assert normalize_mediawiki_url('/pt-br/wikia.php/?method=handle&controller=Email%5CController%5CDiscussionReply') == \
         'nirvana:EmailControllerDiscussionReply::handle'
 
+    assert normalize_mediawiki_url('/v1/DesignSystem/Navigation?product=fandoms&id=1&lang=en') == \
+        'api:DesignSystem'
+
 
 def test_normalize_pandora_url():
     # service URLs

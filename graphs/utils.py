@@ -41,6 +41,10 @@ def normalize_mediawiki_url(url):
             return 'mediawiki:{page}'.format(
                 page=str(parsed.path).replace('/wiki/', '')
             )
+        elif url.startswith('/v1/'):
+            return 'api:{controller}'.format(
+                controller=url.split('/')[2]
+            )
     except KeyError:
         raise ValueError('Provided URL <%s> is not a valid one' % url)
 
