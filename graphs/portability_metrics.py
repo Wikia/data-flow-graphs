@@ -12,7 +12,7 @@ from .utils import get_portability_metrics_query
 from . import ELASTICSEARCH_HOST
 
 
-def get_portability_metrics_flow_graph(limit, period):
+def get_flow_graph(limit, period):
     """
     :type limit int
     :type period int
@@ -66,7 +66,7 @@ def main():
     """
     Generate the files
     """
-    portability_metrics = get_portability_metrics_flow_graph(limit=1000, period=86400)
+    portability_metrics = get_flow_graph(limit=1000, period=86400)
 
     # generate TSV files
     with open('output/portability_metrics.tsv', 'wt') as handler:
