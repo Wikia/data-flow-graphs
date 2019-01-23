@@ -10,14 +10,14 @@ setup(
     author='macbre',
     author_email='macbre@wikia-inc.com',
     install_requires=[
-        'wikia-common-kibana==2.2.5',
-        'data_flow_graph==0.4'
+        'data_flow_graph==0.4.1',
+        'elasticsearch-query==2.4.0',
     ],
     extras_require={
         'dev': [
-            'coverage==4.5.1',
-            'pylint==1.9.2',
-            'pytest==3.6.3',
+            'coverage==4.5.2',
+            'pylint>=1.9.2, <=2.1.1',  # 2.x branch is for Python 3
+            'pytest==4.1.1',
         ]
     },
     include_package_data=True,

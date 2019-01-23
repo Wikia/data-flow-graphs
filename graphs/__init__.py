@@ -10,3 +10,5 @@ logging.basicConfig(
 )
 
 __version__ = '0.1.0'
+
+ELASTICSEARCH_HOST = 'logs-prod.es.service.sjc.consul'

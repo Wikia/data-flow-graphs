@@ -8,9 +8,11 @@ mobile-wiki, Mobile Apps, Pandora and Celery
 from __future__ import print_function
 
 from data_flow_graph import format_tsv_lines, format_graphviz_lines, logs_map_and_reduce
-from wikia_common_kibana import Kibana
+from elasticsearch_query import ElasticsearchQuery
 
 from .utils import normalize_mediawiki_url, normalize_pandora_url, is_mobile_app_user_agent
+
+from . import ELASTICSEARCH_HOST
 
 
 def get_mediawiki_flow_graph(limit, period):
@@ -21,7 +23,11 @@ def get_mediawiki_flow_graph(limit, period):
     """
     # https://kibana5.wikia-inc.com/goto/e6ab16f694b625d5b87833ae794f5989
     # goreplay is running in RES (check SJC logs only)
-    rows = Kibana(period=period, index_prefix='logstash-mediawiki').query_by_string(
+    rows = ElasticsearchQuery(
+        es_host=ELASTICSEARCH_HOST,
+        period=period,
+        index_prefix='logstash-mediawiki'
+    ).query_by_string(
         query='"Wikia internal request" AND @fields.environment: "prod" '
               'AND @fields.datacenter: "sjc" '
               'AND @fields.http_url_path: *',
@@ -37,10 +43,11 @@ def get_mediawiki_flow_graph(limit, period):
     # (u'1', 'nirvana:EmailControllerDiscussionReply::handle')
     rows = [
         (
-            row.get('@context').get('source'),
-            normalize_mediawiki_url(row.get('@fields').get('http_url_path'))
+            row.get('@context', {})['source'],
+            normalize_mediawiki_url(row.get('@fields', {})['http_url_path'])
         )
         for row in rows
+        if row.get('@context', {}).get('source') is not None
     ]
 
     # process the logs
@@ -69,7 +76,11 @@ def get_mobile_apps_flow_graph(limit, period):
     :type period int
     :rtype: list[dict]
     """
-    rows = Kibana(period=period, index_prefix='logstash-apache-access-log').query_by_string(
+    rows = ElasticsearchQuery(
+        es_host=ELASTICSEARCH_HOST,
+        period=period,
+        index_prefix='logstash-apache-access-log'
+    ).query_by_string(
         query='(agent: "Android" OR agent: "iOS") AND NOT agent: "Chrome" '
               'AND @source_host.keyword: /ap-s.*/',
         fields=[
@@ -112,7 +123,11 @@ def get_pandora_flow_graph(limit, period):
     """
     # https://kibana.wikia-inc.com/goto/3aef04fa1f9e55df5cc4c3031671ecab
     # k8s-ingress access logs, internal traffic
-    rows = Kibana(period=period, index_prefix='logstash-k8s-ingress-controller').query_by_string(
+    rows = ElasticsearchQuery(
+        es_host=ELASTICSEARCH_HOST,
+        period=period,
+        index_prefix='logstash-k8s-ingress-controller'
+    ).query_by_string(
         query='NOT request_Fastly-Client-Ip: * AND request_User-Agent: * '
               'AND RequestHost: "prod.sjc.k8s.wikia.net"',
         fields=[
@@ -167,7 +182,11 @@ def get_celery_tasks_flow_graph(limit, period):
     :rtype: list[dict]
     """
     # @see https://kibana5.wikia-inc.com/goto/d877bf3caf4204b9b5fdc5f8864f4ce2
-    rows = Kibana(period=period, index_prefix='logstash-mediawiki').query_by_string(
+    rows = ElasticsearchQuery(
+        es_host=ELASTICSEARCH_HOST,
+        period=period,
+        index_prefix='logstash-mediawiki'
+    ).query_by_string(
         query='@message: "BaseTask::execute" AND @fields.datacenter: "sjc" '
               'AND @fields.environment: "prod"',
         fields=[
