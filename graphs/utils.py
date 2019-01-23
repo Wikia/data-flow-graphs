@@ -11,6 +11,8 @@ except ImportError:
 import re
 from collections import OrderedDict
 
+from sql_metadata import get_query_tables
+
 
 def normalize_mediawiki_url(url):
     """
@@ -119,3 +121,35 @@ def get_solr_parameters(logline):
         params[match[0]] = match[1]
 
     return params
+
+
+def get_portability_metrics_query(logline, job_name):
+    """
+    :type logline str
+    :type job_name str
+    :rtype: list[str, str, str]
+    """
+    # extract SQL query
+    try:
+        sql = str(re.search(r'INFO (.*)$', logline).group(1).strip())
+    except AttributeError:
+        return
+
+    # remove "SQL: " prefix
+    sql = sql.replace('SQL:', '').lstrip()
+
+    # script name
+    # portability-metric-metric-article-provider-py-1548232800
+    script_name = str(re.match(r'portability-metric-([a-z-]+)-\d+', job_name).group(1))
+    script_name = script_name.replace('-py', '.py')
+
+    # SELECT, UPDATE, ...
+    query_type = sql.split(' ')[0].upper()
+
+    # get query metadata
+    for table in get_query_tables(sql):
+        # ignore one letter table aliases
+        if len(table) == 1:
+            continue
+
+        yield script_name, query_type, table

@@ -12,6 +12,7 @@ setup(
     install_requires=[
         'data_flow_graph==0.4.1',
         'elasticsearch-query==2.4.0',
+        'sql_metadata==1.5.0',
     ],
     extras_require={
         'dev': [
@@ -25,6 +26,7 @@ setup(
         'console_scripts': [
             # reports
             'http_pandora_mediawiki=graphs.http_pandora_mediawiki:main',
+            'portability_metrics=graphs.portability_metrics:main',
             'solr=graphs.solr:main',
         ],
     }
