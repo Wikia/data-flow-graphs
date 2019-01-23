@@ -12,7 +12,7 @@ from elasticsearch_query import ElasticsearchQuery
 
 from .utils import normalize_mediawiki_url, normalize_pandora_url, is_mobile_app_user_agent
 
-ELASTICSEARCH_HOST = 'logs-prod.es.service.sjc.consul'
+from . import ELASTICSEARCH_HOST
 
 
 def get_mediawiki_flow_graph(limit, period):
@@ -43,10 +43,11 @@ def get_mediawiki_flow_graph(limit, period):
     # (u'1', 'nirvana:EmailControllerDiscussionReply::handle')
     rows = [
         (
-            row.get('@context').get('source'),
-            normalize_mediawiki_url(row.get('@fields').get('http_url_path'))
+            row.get('@context', {})['source'],
+            normalize_mediawiki_url(row.get('@fields', {})['http_url_path'])
         )
         for row in rows
+        if row.get('@context', {}).get('source') is not None
     ]
 
     # process the logs

@@ -5,9 +5,11 @@ and clients that communicate with it either to make a search query or update a S
 from __future__ import print_function
 
 from data_flow_graph import format_tsv_lines, format_graphviz_lines, logs_map_and_reduce
-from wikia_common_kibana import Kibana
+from elasticsearch_query import ElasticsearchQuery
 
 from .utils import get_solr_parameters, get_solr_core_name
+
+from . import ELASTICSEARCH_HOST
 
 
 def get_solr_flow_graph(limit, period):
@@ -16,7 +18,11 @@ def get_solr_flow_graph(limit, period):
     :type period int
     :rtype: list[dict]
     """
-    rows = Kibana(period=period, index_prefix='logstash-solr').query_by_string(
+    rows = ElasticsearchQuery(
+        es_host=ELASTICSEARCH_HOST,
+        period=period,
+        index_prefix='logstash-solr'
+    ).query_by_string(
         query='@source_host.keyword: /search-s.*/ AND @message: "webapp"',
         fields=[
             '@message',
